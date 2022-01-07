@@ -2,6 +2,7 @@ FROM alpine:latest
 
 RUN apk --update upgrade && \
     apk add curl cyrus-sasl postfix rsyslog supervisor && \
+    find /usr/lib -regex '^.*\(__pycache__\|\.py[co]\)$' -delete && \
     rm -rf /var/cache/apk/*
 
 COPY root/ /
