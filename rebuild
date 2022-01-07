@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+push_image() {
+  IMAGE_PATH=$1
+  if docker push "$IMAGE_PATH"; then
+    echo "Image '$IMAGE_PATH' pushed to Docker Hub."
+  else
+    echo "ERROR: Failed to push '$IMAGE_PATH' to Docker Hub!"
+    exit 1
+  fi
+}
+
+IMAGE="pedbarbosa/docker-postfix"
+VERSION=$(date +'%Y-%m-%d')
+
+if docker build --compress --no-cache --tag "$IMAGE:$VERSION" .; then
+  docker tag "$IMAGE:$VERSION" "$IMAGE:latest"
+  echo "Image '$IMAGE:$VERSION' successfully created, also tagged as '$IMAGE:latest'."
+  if docker login; then
+    push_image "$IMAGE:$VERSION"
+    push_image "$IMAGE:latest"
+  else
+    echo "ERROR: Failed to login to Docker Hub!"
+  fi
+else
+  echo "ERROR: Image '$IMAGE:$VERSION' failed to create!"
+fi
+
+if [ ! -f /var/log/maillog ]; then
+    echo "Calling 'sudo touch' to create /var/log/maillog file ..."
+    sudo touch /var/log/maillog
+fi
