@@ -1,0 +1,3 @@
+[submodule "docker-rebuild"]
+	path = docker-rebuild
+	url = git@gist.github.com:6232d24e44ef62949fb00339a44ca808.git
