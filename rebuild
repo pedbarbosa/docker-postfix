@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [ -f docker-rebuild/rebuild.sh]; then
+    echo -e "Updating git submodules...\n"
+    git submodule init
+    git submodule update
+fi
+
 echo -e "Checking if 'docker-rebuild' submodule is up-to-date...\n"
 git -C docker-rebuild pull
 
