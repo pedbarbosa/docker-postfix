@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
 
-if [ ! -f docker-rebuild/rebuild.sh ]; then
-    echo -e "Updating git submodules...\n"
-    git submodule init
-    git submodule update
-    git -C docker-rebuild checkout main
+if [ -d ../docker-rebuild ]; then
+    echo "Checking if 'docker-rebuild' is up-to-date ..."
+    git -C ../docker-rebuild pull
+else
+    echo "Cloning 'docker-rebuild' from Gist ..."
+    git clone git@gist.github.com:6232d24e44ef62949fb00339a44ca808.git ../docker-rebuild
 fi
 
-echo -e "Checking if 'docker-rebuild' submodule is up-to-date...\n"
-git -C docker-rebuild pull
-
-docker-rebuild/rebuild.sh
+../docker-rebuild/rebuild.sh
 
 if [ ! -f /var/log/maillog ]; then
     echo -e "Calling 'sudo touch' to create /var/log/maillog file ...\n"
