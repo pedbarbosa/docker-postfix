@@ -5,7 +5,8 @@ name: Publish image
 on:
   schedule:
     # Daily at 04:53 in Brisbane, staggered with the other docker-* repos
-    - cron: "53 18 * * *"
+    - cron: "53 4 * * *"
+      timezone: "Australia/Brisbane"
   workflow_dispatch:
     inputs:
       force:
